@@ -1,0 +1,26 @@
+
+server:
+  port: 8080
+  error:
+    include-stacktrace: never
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${PAYHERE_DB_IP:localhost}:${PAYHERE_DB_PORT:3306}/${MYSQL_DATABASE:payhere}?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: ${MYSQL_ROOT_PASSWORD:1234}
+  security:
+    user:
+      name: root
+      password: 1234
+
+  jpa:
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL57Dialect
+    hibernate:
+      ddl-auto: none
