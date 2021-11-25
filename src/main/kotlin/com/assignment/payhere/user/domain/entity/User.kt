@@ -14,7 +14,7 @@ class User (
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
 
-    @Column(nullable = false, unique = true, length = 191)
+    @Column(name = "email", nullable = false, unique = true, length = 191)
     val email: String = "",
 
     @Valid
@@ -22,7 +22,7 @@ class User (
     var password: Password = Password(),
 
     @Column(nullable = false)
-    val created: OffsetDateTime = OffsetDateTime.now(ZoneOffset.of("+00:00")),
+    val created: OffsetDateTime = OffsetDateTime.now(ZoneOffset.of("+09:00")),
 ): Serializable {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

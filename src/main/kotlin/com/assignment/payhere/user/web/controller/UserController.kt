@@ -4,7 +4,7 @@ import com.assignment.payhere.user.web.service.UserService
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 class UserController(
     val userService: UserService
 ) {
