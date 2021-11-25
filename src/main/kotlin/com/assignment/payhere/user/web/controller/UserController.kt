@@ -1,18 +1,22 @@
 package com.assignment.payhere.user.web.controller
 
 import com.assignment.payhere.user.web.service.UserService
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/user")
-class UserController {
+class UserController(
+    val userService: UserService
+) {
     @GetMapping("/{user_id}")
-    fun testUser(
-        @PathVariable("user_id") userId: Long
-    ): Long {
+    fun getUser(@PathVariable("user_id") userId: Long): Long {
         return userId;
     }
+
+//    @PostMapping("")
+//    fun addUser(@RequestBody dto: UserAddRequestDTO): CheckResponse {
+//        return CheckResponse(
+//            success = userService.addUser(dto)
+//        )
+//    }
 }
