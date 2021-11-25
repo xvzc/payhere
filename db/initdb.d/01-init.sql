@@ -1,2 +1,13 @@
 CREATE DATABASE IF NOT EXISTS `payhere`;
 USE `payhere`;
+
+DROP TABLE IF EXISTS `user`;
+
+CREATE TABLE IF NOT EXISTS `user` (
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `email`      VARCHAR(512) NOT NULL DEFAULT '',
+    `password`    VARCHAR(512)  NOT NULL DEFAULT '',
+    `created` DATETIME  NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    UNIQUE (`email`)
+    ) ENGINE = InnoDB;
