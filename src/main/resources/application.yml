@@ -10,6 +10,7 @@ spring:
     url: jdbc:mysql://${PAYHERE_DB_IP:localhost}:${PAYHERE_DB_PORT:3306}/${MYSQL_DATABASE:payhere}?useUnicode=true&characterEncoding=utf-8
     username: root
     password: ${MYSQL_ROOT_PASSWORD:1234}
+
   security:
     user:
       name: root
