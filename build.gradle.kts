@@ -20,6 +20,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+
 	implementation("org.springframework.session:spring-session-core")
 	implementation("org.springframework.boot:spring-boot-starter")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -30,9 +31,9 @@ dependencies {
 
 	implementation("mysql:mysql-connector-java:8.0.16")
 
-
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+
 
 	compileOnly("org.projectlombok:lombok:1.18.12")
 
