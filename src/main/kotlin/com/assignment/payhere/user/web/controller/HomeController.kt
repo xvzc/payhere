@@ -1,6 +1,7 @@
 package com.assignment.payhere.user.web.controller
 
-import com.assignment.payhere._global.dto.CheckResponse
+import com.assignment.payhere._global.dto.CheckDTO
+import com.assignment.payhere._global.dto.UnitResponse
 import com.assignment.payhere.user.domain.dto.SignInRequestDTO
 import com.assignment.payhere.user.domain.dto.RegisterRequestDTO
 import com.assignment.payhere.user.domain.dto.UserResponseDTO
@@ -16,30 +17,33 @@ class HomeController(
     val homeService: HomeService
 ) {
     @PostMapping("/check-email")
-    fun checkEmail(@RequestBody email: String): CheckResponse {
-        return CheckResponse(
-            success = homeService.checkEmail(email)
+    fun checkEmail(@RequestBody email: String): UnitResponse<CheckDTO> {
+        return UnitResponse(
+            data = homeService.checkEmail(email)
         )
     }
 
     @PostMapping("/register")
-    fun resiter(@RequestBody dto: RegisterRequestDTO): CheckResponse {
-        return CheckResponse(
-            success = homeService.register(dto)
+    fun resiter(@RequestBody dto: RegisterRequestDTO): UnitResponse<UserResponseDTO> {
+        return UnitResponse(
+            data = homeService.register(dto)
         )
     }
 
     @PostMapping("/sign-in")
-    fun signIn(@RequestBody dto: SignInRequestDTO, request: HttpServletRequest): UserResponseDTO {
-        return homeService.signIn(dto, request.session)
+    fun signIn(@RequestBody dto: SignInRequestDTO, request: HttpServletRequest): UnitResponse<UserResponseDTO> {
+        return UnitResponse(
+            data = homeService.signIn(dto, request.session)
+        )
     }
 
-    @GetMapping("/sign-out")
+    @DeleteMapping("/sign-out")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun signOut(request: HttpServletRequest) {
-        request.session.invalidate()
+        if(request.session != null) request.session.invalidate()
     }
 
+    // TODO: 2021/11/25 지우기 
     @GetMapping("/sign-in-test")
     fun signInTest(request: HttpServletRequest): String{
         return if(request.session.getAttribute("id") == null)
