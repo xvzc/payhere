@@ -8,6 +8,7 @@ data class SignInRequestDTO(
     val password: String,
 )
 
+// TODO: 2021/11/26 bean validation
 data class RegisterRequestDTO(
     val email: String = "",
     val password: String = "",
