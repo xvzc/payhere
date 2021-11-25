@@ -6,7 +6,7 @@ services:
     container_name: payhere-db
     volumes:
       - ./db/etc/mysql/conf.d:/etc/mysql/conf.d
-      - ./db/var/lib/mysql:/var/lib/mysql
+      # - ./db/var/lib/mysql:/var/lib/mysql
       - ./db/initdb.d:/docker-entrypoint-initdb.d
     env_file: env
     ports:
