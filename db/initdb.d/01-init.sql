@@ -27,7 +27,9 @@ CREATE TABLE IF NOT EXISTS `receipt` (
 
 CREATE TABLE IF NOT EXISTS `tag` (
    `id`   BIGINT NOT NULL AUTO_INCREMENT,
+   `user_id`   BIGINT NOT NULL,
    `name` VARCHAR(191) NOT NULL,
 
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 ) ENGINE = InnoDB;
