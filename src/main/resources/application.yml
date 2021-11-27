@@ -25,3 +25,8 @@ spring:
         dialect: org.hibernate.dialect.MySQL57Dialect
     hibernate:
       ddl-auto: none
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type: TRACE
