@@ -13,19 +13,19 @@
 
 ## API 설계
 ### USER :  HomeController
-| Function | URI | Description |
-| -------- | --- | ----------- |
-| 회원가입 | POST | /register |
-| 이메일 중복 검사| POST | /check-email|
-| 로그인 | POST | /sign-in |
-| 로그아웃 | DELETE | /sign-out |
+| Function | Method |URI | Description |
+| -------- | --- |--- | ----------- |
+| 회원가입 | POST | /register | - |
+| 이메일 중복 검사 | POST | /check-email | - |
+| 로그인 | POST | /sign-in | - |
+| 로그아웃 | DELETE | /sign-out | - |
 
 ### USER : UserController
-| Function | URI | Description |
-| -------- | --- | ----------- |
-| | | |
+| Function | Method |URI | Description |
+| -------- | --- |--- | ----------- |
+| | | | |
 
-### CASHBOOK : Cashbook Controller
-| Function | URI | Description |
-| -------- | --- | ----------- |
-| | | |
+### RECEIPT : ReceiptController
+| Function | Method |URI | Description |
+| -------- | --- |--- | ----------- |
+| | | | |
