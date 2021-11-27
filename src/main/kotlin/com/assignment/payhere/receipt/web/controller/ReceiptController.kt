@@ -25,7 +25,7 @@ class ReceiptController(
     @GetMapping("/daily")
     fun getDailySimpleReceipts(
         @SessionData userId: Long,
-        @RequestParam(name = "year_month_date") date: String
+        @RequestParam(name = "date") date: String
     ): ListResponse<ReceiptSimpleResponseDTO> {
         return ListResponse(
             data = receiptService.getDailySimpleReceipts(userId, date)

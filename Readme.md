@@ -3,13 +3,15 @@
 ## 설명
 ### 실행
 - 모든 컨테이너 실행  
-`docker-compose up`    
-`docker-compose up - d` // 백그라운드 실행
+`./gradlew build && docker-compose up`    
+- 모든 컨테이너 백그라운드 실행  
+`./gradlew build && docker-compose up - d`
 
 
 - 데이터베이스만 실행  
 `docker-compose up database`  
-`docker-compose up -d database` // 백그라운드 실행
+- 데이터베이스만 백그라운드 실행  
+`docker-compose up -d database`
 
 ## API 설계
 ### USER :  HomeController
@@ -28,4 +30,15 @@
 ### RECEIPT : ReceiptController
 | Function | Method |URI | Description |
 | -------- | --- |--- | ----------- |
-| | | | |
+| 소비 기록 상세 조회| GET | /receipts/{receipt_id} | - |
+| 일별 기록 조회 | GET | /receipts/daily?date={date} | date: yyyy-mm-dd|
+| 월별 기록 조회 | GET | /receipts/monthly?month={month} | month: yyyy-mm |
+| 기록하기 | POST | /receipts |-|
+| 기록 수정 | PUT | /receipts/{receipt_id} |-|
+| 기록 삭제 | DELETE | /receipts/{rceipt_id} |-|
+
+### TAG : TagController
+| Function | Method |URI | Description |
+| -------- | --- |--- | ----------- |
+| 태그 검색 | GET | /tags | - |
+| 태그 추가 | POST | /tags | - |

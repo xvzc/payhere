@@ -18,9 +18,8 @@ class TagQueryRepository(
                 .select(tag)
                 .from(tag)
                 .where(
-                        BooleanBuilder()
-                                .and(tag.user.id.eq(userId))
-                                .and(tag.name.contains(name))
+                    tag.user.id.eq(userId)
+                        .and(tag.name.contains(name))
                 )
                 .fetch()
     }

@@ -13,6 +13,7 @@ import com.assignment.payhere.user.web.repository.UserRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.OffsetDateTime
+import javax.transaction.Transactional
 
 @Service
 class ReceiptService(
@@ -53,6 +54,7 @@ class ReceiptService(
         return ReceiptDetailResponseDTO.of(receipt)
     }
 
+    @Transactional
     fun addReceipt(userId: Long, dto: ReceiptAddRequestDTO): ReceiptSimpleResponseDTO {
         val user = userRepository.findByIdOrNull(userId)
             ?: throw AuthenticationFailedException(ErrorCode.INVALID_LOGIN_INFO)
@@ -75,10 +77,12 @@ class ReceiptService(
         return ReceiptSimpleResponseDTO.of(receipt)
     }
 
+    @Transactional
     fun updateReceipt(dto: ReceiptUpdateRequestDTO): ReceiptDetailResponseDTO? {
         return null
     }
 
+    @Transactional
     fun deleteReceipt(ReceiptId: Long) {
     }
 }
