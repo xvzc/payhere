@@ -1,8 +1,15 @@
 package com.assignment.payhere.receipt.domain.dto
 
+import com.assignment.payhere.receipt.domain.entity.Receipt
+import org.hibernate.validator.constraints.Range
+import kotlin.Int.Companion.MAX_VALUE
+import kotlin.Int.Companion.MIN_VALUE
+
 data class ReceiptAddRequestDTO(
+    @Range(min = MIN_VALUE.toLong(), max = MAX_VALUE.toLong())
     val amount: Int = 0,
-    val tag: String = "",
+    @Range(min = Long.MIN_VALUE, max = Long.MAX_VALUE)
+    val tagId: Long?,
     val description: String = ""
 )
 
@@ -43,14 +50,34 @@ data class ReceiptSimpleResponseDTO(
                 tag = projection.tag
             )
         }
+
+        fun of(receipt: Receipt): ReceiptSimpleResponseDTO {
+            return ReceiptSimpleResponseDTO(
+                id = receipt.id,
+                date = receipt.created.toLocalDate().toString(),
+                amount = receipt.amount,
+                tag = receipt.tag?.name ?: ""
+            )
+        }
     }
 }
 
 data class ReceiptDetailResponseDTO(
     val id: Long = 0,
+    val date: String = "",
     val amount: Int = 0,
     val tag: String = "",
     val description: String = ""
 ) {
-
+    companion object {
+        fun of(receipt: Receipt): ReceiptDetailResponseDTO {
+            return ReceiptDetailResponseDTO(
+                id = receipt.id,
+                date = receipt.created.toLocalDate().toString(),
+                amount = receipt.amount,
+                tag = receipt.tag?.name ?: "",
+                description = receipt.description
+            )
+        }
+    }
 }

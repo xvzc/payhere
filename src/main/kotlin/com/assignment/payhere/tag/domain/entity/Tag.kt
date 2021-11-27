@@ -15,4 +15,8 @@ class Tag(
 
     @Column(nullable = false, unique = true, length = 191)
     val name: String = "",
-)
+) {
+    fun isOwnedBy(user: User): Boolean {
+        return this.user == user
+    }
+}

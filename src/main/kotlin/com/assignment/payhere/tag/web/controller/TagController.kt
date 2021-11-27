@@ -16,7 +16,10 @@ class TagController(
 ) {
 
     @GetMapping("/")
-    fun getTags(@SessionData userId: Long, @RequestParam(name = "name") name: String): ListResponse<TagResponseDTO> {
+    fun getTags(
+        @SessionData userId: Long,
+        @RequestParam(name = "name", required = false, defaultValue = "") name: String
+    ): ListResponse<TagResponseDTO> {
         return ListResponse(data = tagService.getTags(userId, name))
     }
 

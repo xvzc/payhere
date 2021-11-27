@@ -27,6 +27,7 @@ class HomeController(
     }
 
     @PostMapping("/register")
+    @ResponseStatus(HttpStatus.CREATED)
     fun register(@Valid @RequestBody dto: RegisterRequestDTO): UnitResponse<UserResponseDTO> {
         return UnitResponse(
             data = homeService.register(dto)
@@ -41,7 +42,7 @@ class HomeController(
     }
 
     @DeleteMapping("/sign-out")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.ACCEPTED)
     fun signOut(request: HttpServletRequest) {
         if(request.session != null) request.session.invalidate()
     }

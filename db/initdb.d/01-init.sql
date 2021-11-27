@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `tag` (
 CREATE TABLE IF NOT EXISTS `receipt` (
      `id`          BIGINT NOT NULL AUTO_INCREMENT,
      `user_id`     BIGINT NOT NULL,
-     `tag_id`      BIGINT NOT NULL,
+     `tag_id`      BIGINT,
      `amount`      INT NOT NULL,
      `description` varchar(512),
      `created`     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

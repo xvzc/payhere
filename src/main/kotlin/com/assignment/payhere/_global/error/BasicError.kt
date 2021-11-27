@@ -6,20 +6,17 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 class BasicError {
     val message: String
-    val status: Int
     val fields: List<FieldError>
     val code: String
 
     constructor(errorCode: ErrorCode, fields: List<FieldError>) {
         message = errorCode.message
-        status = errorCode.status
         this.fields = fields
         this.code = errorCode.code
     }
 
     constructor(errorCode: ErrorCode) {
         message = errorCode.message
-        status = errorCode.status
         fields = emptyList()
         this.code = errorCode.code
     }

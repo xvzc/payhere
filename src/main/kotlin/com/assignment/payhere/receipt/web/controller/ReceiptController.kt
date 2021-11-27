@@ -2,10 +2,8 @@ package com.assignment.payhere.receipt.web.controller
 
 import com.assignment.payhere._global.annotaion.SessionData
 import com.assignment.payhere._global.dto.ListResponse
-import com.assignment.payhere.receipt.domain.dto.ReceiptAddRequestDTO
-import com.assignment.payhere.receipt.domain.dto.ReceiptSimpleResponseDTO
-import com.assignment.payhere.receipt.domain.dto.ReceiptSumResponseDTO
-import com.assignment.payhere.receipt.domain.dto.ReceiptUpdateRequestDTO
+import com.assignment.payhere._global.dto.UnitResponse
+import com.assignment.payhere.receipt.domain.dto.*
 import com.assignment.payhere.receipt.web.service.ReceiptService
 import org.springframework.web.bind.annotation.*
 
@@ -35,11 +33,23 @@ class ReceiptController(
     }
 
     @GetMapping("/{receipt_id}")
-    fun getReceiptDetail(@PathVariable(name = "receipt_id") receiptId: Long) {
+    fun getReceiptDetail(
+        @SessionData userId: Long,
+        @PathVariable(name = "receipt_id") receiptId: Long
+    ): UnitResponse<ReceiptDetailResponseDTO> {
+        return UnitResponse(
+            data = receiptService.getReceiptDetail(userId, receiptId)
+        )
     }
 
     @PostMapping("")
-    fun addReceipt(@RequestBody dto: ReceiptAddRequestDTO) {
+    fun addReceipt(
+        @SessionData userId: Long,
+        @RequestBody dto: ReceiptAddRequestDTO
+    ): UnitResponse<ReceiptSimpleResponseDTO> {
+        return UnitResponse(
+            data = receiptService.addReceipt(userId, dto)
+        )
     }
 
     @PutMapping("{receipt_id}")

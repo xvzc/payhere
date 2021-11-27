@@ -1,5 +1,6 @@
 package com.assignment.payhere.user.domain.entity
 
+import com.assignment.payhere._global.util.Constant
 import com.assignment.payhere.user.domain.embeded.Password
 import lombok.EqualsAndHashCode
 import java.io.Serializable
@@ -22,7 +23,7 @@ class User (
     var password: Password = Password(),
 
     @Column(nullable = false)
-    val created: OffsetDateTime = OffsetDateTime.now(ZoneOffset.of("+09:00")),
+    val created: OffsetDateTime = OffsetDateTime.now(ZoneOffset.of(Constant.TIME_ZONE)),
 ): Serializable {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
