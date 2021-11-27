@@ -6,6 +6,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
+// TODO: 21. 11. 27. Status Code
 @RestControllerAdvice
 class GlobalExceptionHandler {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -42,7 +43,7 @@ class GlobalExceptionHandler {
         )
     }
 
-    /** 앞에서 처리되지 않은 모든 Exception */
+    /** 위에서 처리되지 않은 모든 Exception */
     @ExceptionHandler(Exception::class)
     fun handleSevereException(exception: Exception): ErrorResponse {
         logger.info("handleSevereException", exception)
