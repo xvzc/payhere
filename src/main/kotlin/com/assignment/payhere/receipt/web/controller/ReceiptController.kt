@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/receipts")
 class ReceiptController {
     @GetMapping("/")
-    fun getSimpleReceipts(@RequestParam(name = "year_month") yearMonth: String) {
+    fun getMonthlySimpleReceipts(@RequestParam(name = "year_month") yearMonth: String) {
     }
 
     @GetMapping("/{receipt_id}")
@@ -26,7 +26,7 @@ class ReceiptController {
     ) {
     }
 
-    @DeleteMapping("{receipt_id")
+    @DeleteMapping("{receipt_id}")
     fun deleteReceipt(@PathVariable(name = "receipt_id") receiptId: Long) {
     }
 }

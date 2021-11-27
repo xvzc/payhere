@@ -15,9 +15,15 @@ enum class ErrorCode(
     METHOD_NOT_ALLOWED(405, "G-002", " Method not allowed"),
     INVALID_TYPE_VALUE( 400, "G-003", " Invalid type value" ),
     ACCESS_DENIED(403, "G-004", "Access is Denied"),
+    LOGIN_REQUIRED(401, "G-005", "Login required"),
 
     // User
     USER_NOT_FOUND(404, "USER-000", "User not found"),
     EMAIL_DUPLICATION( 400, "USER-001", "Email already exists" ),
     SIGN_IN_FAILED(400, "USER-002", "Incorrect username or password"),
+    WRONG_LOGIN_INFO(400, "USER-003", "Wrong login information"),
+
+    // Tag
+    TAG_DUPLICATION(400, "TAG-000", "Tag already exists"),
+
 }

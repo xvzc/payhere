@@ -1,5 +1,6 @@
 package com.assignment.payhere.tag.web.controller
 
+import com.assignment.payhere._global.annotaion.SessionData
 import com.assignment.payhere._global.dto.ListResponse
 import com.assignment.payhere._global.dto.UnitResponse
 import com.assignment.payhere.tag.domain.dto.TagAddRequestDTO
@@ -13,23 +14,14 @@ import org.springframework.web.bind.annotation.*
 class TagController(
     val tagService: TagService
 ) {
-    companion object {
-        const val TAG_PAGE_SIZE = 20
-    }
 
-    @GetMapping("/{page}")
-    fun getTags(@RequestParam(name = "name") name: String,
-                @PathVariable(name = "page") page: Int,
-    ): ListResponse<TagResponseDTO> {
-        return ListResponse(
-            data = tagService.getTags(name, PageRequest.of(page, TAG_PAGE_SIZE))
-        )
+    @GetMapping("/")
+    fun getTags(@SessionData userId: Long, @RequestParam(name = "name") name: String): ListResponse<TagResponseDTO> {
+        return ListResponse(data = tagService.getTags(userId, name))
     }
 
     @PostMapping("/")
-    fun addTag(@RequestBody dto: TagAddRequestDTO): UnitResponse<TagResponseDTO> {
-        return UnitResponse(
-            data = tagService.addTag(dto)
-        )
+    fun addTag(@SessionData userId: Long, @RequestBody dto: TagAddRequestDTO): UnitResponse<TagResponseDTO> {
+        return UnitResponse(data = tagService.addTag(userId, dto))
     }
 }

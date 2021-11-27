@@ -1,5 +1,6 @@
 package com.assignment.payhere.user.web.controller
 
+import com.assignment.payhere._global.annotaion.SessionData
 import com.assignment.payhere._global.dto.CheckDTO
 import com.assignment.payhere._global.dto.UnitResponse
 import com.assignment.payhere.user.domain.dto.SignInRequestDTO
@@ -7,8 +8,10 @@ import com.assignment.payhere.user.domain.dto.RegisterRequestDTO
 import com.assignment.payhere.user.domain.dto.UserResponseDTO
 import com.assignment.payhere.user.web.service.HomeService
 import org.springframework.http.HttpStatus
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
+import javax.validation.Valid
 
 
 @RestController
@@ -24,7 +27,7 @@ class HomeController(
     }
 
     @PostMapping("/register")
-    fun resiter(@RequestBody dto: RegisterRequestDTO): UnitResponse<UserResponseDTO> {
+    fun register(@Valid @RequestBody dto: RegisterRequestDTO): UnitResponse<UserResponseDTO> {
         return UnitResponse(
             data = homeService.register(dto)
         )
@@ -45,10 +48,13 @@ class HomeController(
 
     // TODO: 2021/11/25 지우기 
     @GetMapping("/sign-in-test")
-    fun signInTest(request: HttpServletRequest): String{
-        return if(request.session.getAttribute("id") == null)
-            "failed"
-        else
-            "okay"
+    fun signInTest(@SessionData userId: Long): String{
+        println(userId)
+        println(userId)
+        println(userId)
+        println(userId)
+        println(userId)
+        println(userId)
+        return "okay"
     }
 }

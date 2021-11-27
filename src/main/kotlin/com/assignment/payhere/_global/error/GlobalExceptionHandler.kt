@@ -34,6 +34,14 @@ class GlobalExceptionHandler {
         )
     }
 
+    @ExceptionHandler(AuthenticationFailedException::class)
+    fun handleAuthenticationFailedException(exception: AuthenticationFailedException): ErrorResponse {
+        logger.info("handleAuthenticationFailedException", exception)
+        return ErrorResponse(
+                error = BasicError.of(exception)
+        )
+    }
+
     /** 앞에서 처리되지 않은 모든 Exception */
     @ExceptionHandler(Exception::class)
     fun handleSevereException(exception: Exception): ErrorResponse {

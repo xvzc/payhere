@@ -25,9 +25,9 @@ class BasicError {
     }
 
     class FieldError(
-        private val field: String,
-        private val value: String,
-        private val reason: String
+        val field: String,
+        val value: String,
+        val reason: String
     ) {
         companion object {
             fun of(field: String, value: String, reason: String): List<FieldError> {
@@ -39,7 +39,7 @@ class BasicError {
             // BindingResult 안에는 fieldError 정보가 들어있다.
             fun of(bindingResult: BindingResult): List<FieldError> {
                 val fieldErrors = bindingResult.fieldErrors
-                return fieldErrors.map { error: org.springframework.validation.FieldError ->
+                return fieldErrors.map { error ->
                     FieldError(
                         error.field,
                         error.rejectedValue?.toString() ?: "",

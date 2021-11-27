@@ -22,9 +22,9 @@ class HomeService(
         if(!user.password.isMatch(dto.password))
             throw AuthenticationFailedException(ErrorCode.SIGN_IN_FAILED)
 
-        session.setAttribute("id", user.id)
+        session.setAttribute("userId", user.id)
 
-        return UserResponseDTO.of(user);
+        return UserResponseDTO.of(user)
     }
 
     fun register(dto: RegisterRequestDTO): UserResponseDTO {

@@ -14,9 +14,9 @@ data class ReceiptUpdateRequestDTO(
 )
 
 data class ReceiptSimpleResponseDTO(
-    val id: Long = 0,
-    val amount: Int = 0,
-    val tag: String = "",
+    val date: String = "",
+    val income: Long = 0,
+    val outgo: Long = 0,
 )
 
 data class ReceiptDetailResponseDTO(
