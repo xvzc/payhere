@@ -23,13 +23,16 @@ class Receipt(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tag_id")
-    var tag: Tag? = null,
+    var tag: Tag = Tag(),
 
     @Column(nullable = false, unique = true, length = 191)
     var description: String = "",
 
     @Column(nullable = false)
-    val created: OffsetDateTime = OffsetDateTime.now(ZoneOffset.of(Constant.TIME_ZONE))
+    val created: OffsetDateTime = OffsetDateTime.now(ZoneOffset.of(Constant.TIME_ZONE)),
+
+    @Column(nullable = false)
+    var deleted: Char = 'N'
 ): Serializable {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

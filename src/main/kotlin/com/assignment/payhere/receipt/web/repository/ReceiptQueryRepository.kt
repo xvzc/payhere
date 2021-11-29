@@ -5,13 +5,13 @@ import com.assignment.payhere.receipt.domain.dto.QReceiptSumProjection
 import com.assignment.payhere.receipt.domain.dto.ReceiptSimpleProjection
 import com.assignment.payhere.receipt.domain.dto.ReceiptSumProjection
 import com.assignment.payhere.receipt.domain.entity.QReceipt
+import com.assignment.payhere.receipt.domain.entity.Receipt
 import com.querydsl.core.types.ConstantImpl
 import com.querydsl.core.types.dsl.CaseBuilder
 import com.querydsl.core.types.dsl.Expressions
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Repository
 import java.time.OffsetDateTime
-
 
 @Repository
 class ReceiptQueryRepository(
@@ -48,7 +48,9 @@ class ReceiptQueryRepository(
                 receipt.user.id.eq(userId)
                     .and(formattedDate.goe(firstDateOfMonth.toLocalDate().toString())) // 이번달 1일 부터
                     .and(formattedDate.lt(firstDateOfMonth.plusMonths(1).toLocalDate().toString())) // 다음달 이전까지
+                    .and(receipt.deleted.eq('N'))
             )
+            .orderBy(formattedDate.asc())
             .fetch()
     }
 
@@ -73,10 +75,23 @@ class ReceiptQueryRepository(
             .from(receipt)
             .where(
                 receipt.user.id.eq(userId)
-                    .and(formattedDate.goe(date.toLocalDate().toString())) // 요청된 날짜 부터
-                    .and(formattedDate.lt(date.plusDays(1).toLocalDate().toString())) // 그 다음달 이전까지
+                    .and(formattedDate.eq(date.toLocalDate().toString())) // 요청된 날짜 부터
+                    .and(receipt.deleted.eq('N'))
+            )
+            .orderBy(receipt.created.asc())
+            .fetch()
+    }
+
+    fun findDeletedReceipts(userId: Long): MutableList<Receipt> {
+        val receipt = QReceipt.receipt
+
+        return queryFactory
+            .select(receipt)
+            .from(receipt)
+            .where(
+                receipt.user.id.eq(userId)
+                    .and(receipt.deleted.eq('Y'))
             )
             .fetch()
-
     }
 }

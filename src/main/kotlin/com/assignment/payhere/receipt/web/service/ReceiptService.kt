@@ -10,7 +10,6 @@ import com.assignment.payhere.receipt.web.repository.ReceiptQueryRepository
 import com.assignment.payhere.receipt.web.repository.ReceiptRepository
 import com.assignment.payhere.tag.web.repository.TagRepository
 import com.assignment.payhere.user.web.repository.UserRepository
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.OffsetDateTime
 import javax.transaction.Transactional
@@ -24,7 +23,7 @@ class ReceiptService(
 ) {
     fun getMonthlySumReceipts(userId: Long, month: String): List<ReceiptSumResponseDTO> {
         // 해당 달의 첫번째 날짜를 OffsetDate로
-        val firstDateOfMonth = OffsetDateTime.parse(month + "-01" + "T00:00" + Constant.TIME_ZONE)
+        val firstDateOfMonth = OffsetDateTime.parse(month + "-01" + "T00:00:00" + Constant.TIME_ZONE)
 
         return receiptQueryRepository.findMonthlyReceipts(userId, firstDateOfMonth)
             .map { projection ->
@@ -33,20 +32,23 @@ class ReceiptService(
     }
 
     fun getDailySimpleReceipts(userId: Long, date: String): List<ReceiptSimpleResponseDTO> {
-        val offsetDateTime = OffsetDateTime.parse(date + "T00:00" + Constant.TIME_ZONE)
+        val offsetDateTime = OffsetDateTime.parse(date + "T00:00:00" + Constant.TIME_ZONE)
 
-        return receiptQueryRepository.findDailyReceipts(userId, offsetDateTime)
-            .map { projection ->
+        val res = receiptQueryRepository.findDailyReceipts(userId, offsetDateTime)
+
+        return res.map { projection ->
                 ReceiptSimpleResponseDTO.of(projection)
         }
     }
 
     fun getReceiptDetail(userId: Long, receiptId: Long): ReceiptDetailResponseDTO {
-        val user = userRepository.findByIdOrNull(userId)
-            ?: throw AuthenticationFailedException(ErrorCode.INVALID_LOGIN_INFO)
+        val user = userRepository.findById(userId).orElseThrow {
+            AuthenticationFailedException(ErrorCode.INVALID_LOGIN_INFO)
+        }
 
-        val receipt = receiptRepository.findByIdOrNull(receiptId)
-            ?: throw ResourceNotFoundException(ErrorCode.RECEIPT_NOT_FOUND)
+        val receipt = receiptRepository.findById(receiptId).orElseThrow {
+            ResourceNotFoundException(ErrorCode.RECEIPT_NOT_FOUND)
+        }
 
         if(!receipt.isOwnedBy(user))
             throw AuthenticationFailedException(ErrorCode.ACCESS_DENIED)
@@ -54,13 +56,21 @@ class ReceiptService(
         return ReceiptDetailResponseDTO.of(receipt)
     }
 
+    fun getDeletedReceipts(userId: Long): List<ReceiptSimpleResponseDTO> {
+        return receiptQueryRepository.findDeletedReceipts(userId).map { receipt ->
+           ReceiptSimpleResponseDTO.of(receipt)
+        }
+    }
+
     @Transactional
     fun addReceipt(userId: Long, dto: ReceiptAddRequestDTO): ReceiptSimpleResponseDTO {
-        val user = userRepository.findByIdOrNull(userId)
-            ?: throw AuthenticationFailedException(ErrorCode.INVALID_LOGIN_INFO)
+        val user = userRepository.findById(userId).orElseThrow {
+            AuthenticationFailedException(ErrorCode.INVALID_LOGIN_INFO)
+        }
 
-        val tag = tagRepository.findByIdOrNull(dto.tagId)
-            ?: throw ResourceNotFoundException(ErrorCode.TAG_NOT_FOUND)
+        val tag = tagRepository.findById(dto.tagId).orElseThrow {
+            ResourceNotFoundException(ErrorCode.TAG_NOT_FOUND)
+        }
 
         if(!tag.isOwnedBy(user))
             throw AuthenticationFailedException(ErrorCode.ACCESS_DENIED)
@@ -78,11 +88,65 @@ class ReceiptService(
     }
 
     @Transactional
-    fun updateReceipt(dto: ReceiptUpdateRequestDTO): ReceiptDetailResponseDTO? {
-        return null
+    fun updateReceipt(userId:Long, receiptId: Long, dto: ReceiptUpdateRequestDTO): ReceiptSimpleResponseDTO {
+        val user = userRepository.findById(userId).orElseThrow {
+            AuthenticationFailedException(ErrorCode.INVALID_LOGIN_INFO)
+        }
+
+        val receipt = receiptRepository.findById(receiptId).orElseThrow {
+            ResourceNotFoundException(ErrorCode.RECEIPT_NOT_FOUND)
+        }
+
+        if(!receipt.isOwnedBy(user))
+            throw AuthenticationFailedException(ErrorCode.ACCESS_DENIED)
+
+        val newTag = tagRepository.findById(dto.tagId).orElseThrow {
+            ResourceNotFoundException(ErrorCode.TAG_NOT_FOUND)
+        }
+
+
+        val newReceipt = receipt.apply {
+            amount = dto.amount
+            tag = newTag
+            description = dto.description
+        }
+
+        return ReceiptSimpleResponseDTO.of(newReceipt)
     }
 
     @Transactional
-    fun deleteReceipt(ReceiptId: Long) {
+    fun deleteReceipt(userId: Long, receiptId: Long) {
+        val user = userRepository.findById(userId).orElseThrow {
+            AuthenticationFailedException(ErrorCode.INVALID_LOGIN_INFO)
+        }
+
+        val receipt = receiptRepository.findById(receiptId).orElseThrow {
+            ResourceNotFoundException(ErrorCode.RECEIPT_NOT_FOUND)
+        }
+
+        if(!receipt.isOwnedBy(user))
+            throw AuthenticationFailedException(ErrorCode.ACCESS_DENIED)
+
+        receipt.apply {
+            deleted = 'Y'
+        }
+    }
+
+    @Transactional
+    fun recoverReceipt(userId: Long, receiptId: Long) {
+        val user = userRepository.findById(userId).orElseThrow {
+            AuthenticationFailedException(ErrorCode.INVALID_LOGIN_INFO)
+        }
+
+        val receipt = receiptRepository.findById(receiptId).orElseThrow {
+            ResourceNotFoundException(ErrorCode.RECEIPT_NOT_FOUND)
+        }
+
+        if(!receipt.isOwnedBy(user))
+            throw AuthenticationFailedException(ErrorCode.ACCESS_DENIED)
+
+        receipt.apply {
+            deleted = 'N'
+        }
     }
 }

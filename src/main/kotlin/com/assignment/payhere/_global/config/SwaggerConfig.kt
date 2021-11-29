@@ -3,6 +3,7 @@ package com.assignment.payhere._global.config
 import com.assignment.payhere._global.annotaion.SessionData
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.web.bind.annotation.RestController
 import springfox.documentation.builders.PathSelectors
 import springfox.documentation.builders.RequestHandlerSelectors
 import springfox.documentation.spi.DocumentationType
@@ -15,10 +16,11 @@ class SwaggerConfig {
     @Bean
     fun api(): Docket {
         return Docket(DocumentationType.SWAGGER_2)
-                .ignoredParameterTypes(SessionData::class.java)
-                .select()
-                .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.ant("/*/**"))
-                .build()
+            .useDefaultResponseMessages(false)
+            .ignoredParameterTypes(SessionData::class.java)
+            .select()
+            .apis(RequestHandlerSelectors.withClassAnnotation(RestController::class.java))
+            .paths(PathSelectors.ant("/*/**"))
+            .build()
     }
 }

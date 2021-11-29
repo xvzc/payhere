@@ -1,6 +1,10 @@
 package com.assignment.payhere.user.web.controller
 
+import com.assignment.payhere._global.annotaion.SessionData
+import com.assignment.payhere._global.dto.UnitResponse
+import com.assignment.payhere.user.domain.dto.UserResponseDTO
 import com.assignment.payhere.user.web.service.UserService
+import io.swagger.annotations.ApiOperation
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -8,15 +12,11 @@ import org.springframework.web.bind.annotation.*
 class UserController(
     val userService: UserService
 ) {
-    @GetMapping("/{user_id}")
-    fun getUser(@PathVariable("user_id") userId: Long): Long {
-        return userId;
+    @GetMapping("/")
+    @ApiOperation(value = "유저 정보 조회", notes = "로그인된 유저의 정보를 조회합니다.")
+    fun getUser(@SessionData userId: Long): UnitResponse<UserResponseDTO> {
+        return UnitResponse(
+            data = userService.getUser(userId)
+        )
     }
-
-//    @PostMapping("")
-//    fun addUser(@RequestBody dto: UserAddRequestDTO): CheckResponse {
-//        return CheckResponse(
-//            success = userService.addUser(dto)
-//        )
-//    }
 }

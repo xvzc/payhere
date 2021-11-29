@@ -1,5 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat.*
+import org.gradle.api.tasks.testing.logging.TestLogEvent.*
+
 
 plugins {
 	id("org.springframework.boot") version "2.5.7"
@@ -50,6 +52,7 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-validation")
 	testImplementation("org.springframework.kafka:spring-kafka-test")
 	testImplementation("org.springframework.security:spring-security-test")
+	implementation("io.mockk:mockk:1.12.1")
 	testImplementation("junit:junit:4.12")
 
 	annotationProcessor("org.projectlombok:lombok:1.18.12")
@@ -68,4 +71,11 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+	testLogging {
+		events(FAILED, STANDARD_ERROR, SKIPPED, PASSED)
+		exceptionFormat = FULL
+		showExceptions = true
+		showCauses = true
+		showStackTraces = true
+	}
 }

@@ -9,5 +9,4 @@ import java.util.*
 interface UserRepository: JpaRepository<User, Long> {
     fun existsByEmail(email: String): Boolean
     fun findByEmail(email: String): User?
-    override fun findById(userId: Long): Optional<User>
 }

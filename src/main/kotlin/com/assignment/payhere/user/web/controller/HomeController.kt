@@ -7,6 +7,7 @@ import com.assignment.payhere.user.domain.dto.SignInRequestDTO
 import com.assignment.payhere.user.domain.dto.RegisterRequestDTO
 import com.assignment.payhere.user.domain.dto.UserResponseDTO
 import com.assignment.payhere.user.web.service.HomeService
+import io.swagger.annotations.ApiOperation
 import org.springframework.http.HttpStatus
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
@@ -20,6 +21,7 @@ class HomeController(
     val homeService: HomeService
 ) {
     @PostMapping("/check-email")
+    @ApiOperation(value = "이메일 중복 검사", notes = "가입할 때 사용할 이메일의 중복여부를 검사합니다.")
     fun checkEmail(@RequestBody email: String): UnitResponse<CheckDTO> {
         return UnitResponse(
             data = homeService.checkEmail(email)
@@ -28,6 +30,7 @@ class HomeController(
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value = "회원가입", notes = "유저를 생성합니다.")
     fun register(@Valid @RequestBody dto: RegisterRequestDTO): UnitResponse<UserResponseDTO> {
         return UnitResponse(
             data = homeService.register(dto)
@@ -35,6 +38,7 @@ class HomeController(
     }
 
     @PostMapping("/sign-in")
+    @ApiOperation(value = "로그인", notes = "로그인 수행후 세션을 생성합니다.")
     fun signIn(@RequestBody dto: SignInRequestDTO, request: HttpServletRequest): UnitResponse<UserResponseDTO> {
         return UnitResponse(
             data = homeService.signIn(dto, request.session)
@@ -43,19 +47,8 @@ class HomeController(
 
     @DeleteMapping("/sign-out")
     @ResponseStatus(HttpStatus.ACCEPTED)
+    @ApiOperation(value = "로그아웃", notes = "로그아웃을 수행합니다.")
     fun signOut(request: HttpServletRequest) {
         if(request.session != null) request.session.invalidate()
-    }
-
-    // TODO: 2021/11/25 지우기 
-    @GetMapping("/sign-in-test")
-    fun signInTest(@SessionData userId: Long): String{
-        println(userId)
-        println(userId)
-        println(userId)
-        println(userId)
-        println(userId)
-        println(userId)
-        return "okay"
     }
 }

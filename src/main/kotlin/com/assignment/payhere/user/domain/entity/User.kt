@@ -32,6 +32,7 @@ class User (
         other as User
 
         if (id != other.id) return false
+        if (email != other.email) return false
 
         return true
     }

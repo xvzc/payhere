@@ -1,17 +1,16 @@
 package com.assignment.payhere.tag.domain.dto
 
 import com.assignment.payhere.tag.domain.entity.Tag
-import com.assignment.payhere.user.domain.dto.UserResponseDTO
-import com.assignment.payhere.user.domain.entity.User
+import javax.validation.constraints.NotEmpty
 
-// TODO: 2021/11/26 Bean Validation
 data class TagAddRequestDTO(
+    @NotEmpty
     val name: String = ""
 )
 
 data class TagResponseDTO(
-    val id: Long = 0,
-    val name: String = ""
+    val id: Long? = 0,
+    val name: String? = ""
 
 ) {
     companion object {

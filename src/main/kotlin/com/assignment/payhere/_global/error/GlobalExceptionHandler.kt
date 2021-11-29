@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
-// TODO: 21. 11. 27. Status Code
 @RestControllerAdvice
 class GlobalExceptionHandler {
     private val logger = LoggerFactory.getLogger(javaClass)
