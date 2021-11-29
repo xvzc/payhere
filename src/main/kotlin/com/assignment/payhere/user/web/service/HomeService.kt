@@ -31,9 +31,9 @@ class HomeService(
         if(userRepository.existsByEmail(dto.email))
             throw AlreadyExistsException(ErrorCode.EMAIL_DUPLICATION)
 
-        val user = userRepository.save(dto.toEntity())
+        val user = dto.toEntity()
 
-        return UserResponseDTO.of(user)
+        return UserResponseDTO.of(userRepository.save(user))
     }
 
     fun checkEmail(email: String): CheckDTO {

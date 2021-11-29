@@ -9,6 +9,7 @@ import com.assignment.payhere.receipt.domain.entity.Receipt
 import com.assignment.payhere.receipt.web.repository.ReceiptQueryRepository
 import com.assignment.payhere.receipt.web.repository.ReceiptRepository
 import com.assignment.payhere.tag.web.repository.TagRepository
+import com.assignment.payhere.user.domain.entity.User
 import com.assignment.payhere.user.web.repository.UserRepository
 import org.springframework.stereotype.Service
 import java.time.OffsetDateTime
@@ -42,12 +43,12 @@ class ReceiptService(
     }
 
     fun getReceiptDetail(userId: Long, receiptId: Long): ReceiptDetailResponseDTO {
-        val user = userRepository.findById(userId).orElseThrow {
-            AuthenticationFailedException(ErrorCode.INVALID_LOGIN_INFO)
-        }
-
         val receipt = receiptRepository.findById(receiptId).orElseThrow {
             ResourceNotFoundException(ErrorCode.RECEIPT_NOT_FOUND)
+        }
+
+        val user = userRepository.findById(userId).orElseThrow {
+            AuthenticationFailedException(ErrorCode.INVALID_LOGIN_INFO)
         }
 
         if(!receipt.isOwnedBy(user))
@@ -64,37 +65,35 @@ class ReceiptService(
 
     @Transactional
     fun addReceipt(userId: Long, dto: ReceiptAddRequestDTO): ReceiptSimpleResponseDTO {
-        val user = userRepository.findById(userId).orElseThrow {
-            AuthenticationFailedException(ErrorCode.INVALID_LOGIN_INFO)
-        }
-
         val tag = tagRepository.findById(dto.tagId).orElseThrow {
             ResourceNotFoundException(ErrorCode.TAG_NOT_FOUND)
+        }
+
+        val user = userRepository.findById(userId).orElseThrow {
+            AuthenticationFailedException(ErrorCode.INVALID_LOGIN_INFO)
         }
 
         if(!tag.isOwnedBy(user))
             throw AuthenticationFailedException(ErrorCode.ACCESS_DENIED)
 
-        val receipt = receiptRepository.save(
-            Receipt(
+        val receipt = Receipt(
                 user = user,
                 tag = tag,
                 amount = dto.amount,
                 description = dto.description
             )
-        )
 
-        return ReceiptSimpleResponseDTO.of(receipt)
+        return ReceiptSimpleResponseDTO.of(receiptRepository.save(receipt))
     }
 
     @Transactional
     fun updateReceipt(userId:Long, receiptId: Long, dto: ReceiptUpdateRequestDTO): ReceiptSimpleResponseDTO {
-        val user = userRepository.findById(userId).orElseThrow {
-            AuthenticationFailedException(ErrorCode.INVALID_LOGIN_INFO)
-        }
-
         val receipt = receiptRepository.findById(receiptId).orElseThrow {
             ResourceNotFoundException(ErrorCode.RECEIPT_NOT_FOUND)
+        }
+
+        val user = userRepository.findById(userId).orElseThrow {
+            AuthenticationFailedException(ErrorCode.INVALID_LOGIN_INFO)
         }
 
         if(!receipt.isOwnedBy(user))
@@ -104,6 +103,8 @@ class ReceiptService(
             ResourceNotFoundException(ErrorCode.TAG_NOT_FOUND)
         }
 
+        if(!newTag.isOwnedBy(user))
+            throw AuthenticationFailedException(ErrorCode.ACCESS_DENIED)
 
         val newReceipt = receipt.apply {
             amount = dto.amount
@@ -116,12 +117,12 @@ class ReceiptService(
 
     @Transactional
     fun deleteReceipt(userId: Long, receiptId: Long) {
-        val user = userRepository.findById(userId).orElseThrow {
-            AuthenticationFailedException(ErrorCode.INVALID_LOGIN_INFO)
-        }
-
         val receipt = receiptRepository.findById(receiptId).orElseThrow {
             ResourceNotFoundException(ErrorCode.RECEIPT_NOT_FOUND)
+        }
+
+        val user = userRepository.findById(userId).orElseThrow {
+            AuthenticationFailedException(ErrorCode.INVALID_LOGIN_INFO)
         }
 
         if(!receipt.isOwnedBy(user))
@@ -134,12 +135,12 @@ class ReceiptService(
 
     @Transactional
     fun recoverReceipt(userId: Long, receiptId: Long) {
-        val user = userRepository.findById(userId).orElseThrow {
-            AuthenticationFailedException(ErrorCode.INVALID_LOGIN_INFO)
-        }
-
         val receipt = receiptRepository.findById(receiptId).orElseThrow {
             ResourceNotFoundException(ErrorCode.RECEIPT_NOT_FOUND)
+        }
+
+        val user = userRepository.findById(userId).orElseThrow {
+            AuthenticationFailedException(ErrorCode.INVALID_LOGIN_INFO)
         }
 
         if(!receipt.isOwnedBy(user))

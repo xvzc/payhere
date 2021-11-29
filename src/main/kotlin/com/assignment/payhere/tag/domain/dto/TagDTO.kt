@@ -9,8 +9,8 @@ data class TagAddRequestDTO(
 )
 
 data class TagResponseDTO(
-    val id: Long? = 0,
-    val name: String? = ""
+    val id: Long = 0,
+    val name: String = ""
 
 ) {
     companion object {

@@ -38,7 +38,7 @@ class HomeController(
     }
 
     @PostMapping("/sign-in")
-    @ApiOperation(value = "로그인", notes = "로그인 수행후 세션을 생성합니다.")
+    @ApiOperation(value = "로그인", notes = "로그인을 수행합니다.")
     fun signIn(@RequestBody dto: SignInRequestDTO, request: HttpServletRequest): UnitResponse<UserResponseDTO> {
         return UnitResponse(
             data = homeService.signIn(dto, request.session)

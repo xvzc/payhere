@@ -45,7 +45,7 @@ data class ReceiptSimpleResponseDTO(
     val id: Long = 0,
     val date: String = "",
     val amount: Int = 0,
-    val tag: String?
+    val tag: String
 ) {
     companion object {
         fun of(projection: ReceiptSimpleProjection): ReceiptSimpleResponseDTO {
@@ -72,7 +72,7 @@ data class ReceiptDetailResponseDTO(
     val id: Long = 0,
     val date: String = "",
     val amount: Int = 0,
-    val tag: TagResponseDTO? ,
+    val tag: TagResponseDTO ,
     val description: String = ""
 ) {
     companion object {

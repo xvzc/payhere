@@ -17,13 +17,13 @@ class TagService(
     val tagQueryRepository: TagQueryRepository,
     val userRepository: UserRepository
 ) {
-    fun getTags(userId: Long, name: String): List<TagResponseDTO?> {
+    fun getTags(userId: Long, name: String): List<TagResponseDTO> {
         return tagQueryRepository.findByUserIdAndNameContains(userId, name).map { tag ->
             TagResponseDTO.of(tag)
         }
     }
 
-    fun addTag(userId: Long, dto: TagAddRequestDTO): TagResponseDTO? {
+    fun addTag(userId: Long, dto: TagAddRequestDTO): TagResponseDTO {
         val user = userRepository.findById(userId).orElseThrow {
             AuthenticationFailedException(ErrorCode.INVALID_LOGIN_INFO)
         }
