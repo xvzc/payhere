@@ -10,6 +10,7 @@
 - Json web token
 - swagger-ui
 ## 설명
+- Swagger-ui http://localhost:8080/swagger-ui/index.html 
 - 모든 기능에 대한 단위 테스트를 진행하지는 못했으나 Service 우선으로 작성하였습니다.
 - Redis를 활용해 토큰 로그인 및 로그아웃을 구현하였습니다.
   - 편안한 테스트 환경을 위해 Authorization 헤더 방식이 아닌 쿠키 방식을 사용했습니다.
