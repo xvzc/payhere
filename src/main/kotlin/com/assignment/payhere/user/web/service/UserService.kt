@@ -17,4 +17,5 @@ class UserService(
 
         return UserResponseDTO.of(user)
     }
+
 }

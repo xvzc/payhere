@@ -11,3 +11,7 @@ class AlreadyExistsException(
 class AuthenticationFailedException(
     errorCode: ErrorCode
 ): BaseException(errorCode)
+
+class DataFormatViolatedExceiption(
+    errorCode: ErrorCode
+): BaseException(errorCode)

@@ -1,8 +1,9 @@
 package com.assignment.payhere.tag.web.controller
 
-import com.assignment.payhere._global.annotaion.SessionData
+import com.assignment.payhere._global.annotaion.LoginData
 import com.assignment.payhere._global.dto.ListResponse
 import com.assignment.payhere._global.dto.UnitResponse
+import com.assignment.payhere._global.util.jwt.PayhereToken
 import com.assignment.payhere.tag.domain.dto.TagAddRequestDTO
 import com.assignment.payhere.tag.domain.dto.TagResponseDTO
 import com.assignment.payhere.tag.web.service.TagService
@@ -18,15 +19,15 @@ class TagController(
     @GetMapping("/")
     @ApiOperation(value = "태그 검색", notes = "빈 문자열을 입력시 전체 태그를 조회합니다.")
     fun getTags(
-        @SessionData userId: Long,
+        @LoginData jwt: PayhereToken,
         @RequestParam(name = "name", required = false, defaultValue = "") name: String
     ): ListResponse<TagResponseDTO?> {
-        return ListResponse(data = tagService.getTags(userId, name))
+        return ListResponse(data = tagService.getTags(jwt.userId, name))
     }
 
     @PostMapping("/")
     @ApiOperation(value = "태그 추가", notes = "태그를 추가합니다.")
-    fun addTag(@SessionData userId: Long, @RequestBody dto: TagAddRequestDTO): UnitResponse<TagResponseDTO?> {
-        return UnitResponse(data = tagService.addTag(userId, dto))
+    fun addTag(@LoginData jwt: PayhereToken, @RequestBody dto: TagAddRequestDTO): UnitResponse<TagResponseDTO?> {
+        return UnitResponse(data = tagService.addTag(jwt.userId, dto))
     }
 }

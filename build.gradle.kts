@@ -29,6 +29,8 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.session:spring-session-core")
 	implementation("org.springframework.boot:spring-boot-starter")
+	implementation("org.springframework.boot:spring-boot-starter-data-redis:2.5.3")
+
 
 	implementation ("io.springfox:springfox-boot-starter:3.0.0")
 	implementation ("io.springfox:springfox-swagger-ui:3.0.0")
@@ -40,6 +42,11 @@ dependencies {
 	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 
 	implementation("mysql:mysql-connector-java:8.0.20")
+
+	implementation("com.auth0:java-jwt:3.8.2")
+
+	implementation("io.mockk:mockk:1.12.1")
+
 	kapt("com.querydsl:querydsl-apt:$qeurydslVersion:jpa")
 	kapt("org.springframework.boot:spring-boot-configuration-processor")
 	implementation("com.querydsl:querydsl-jpa:$qeurydslVersion")
@@ -52,7 +59,6 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-validation")
 	testImplementation("org.springframework.kafka:spring-kafka-test")
 	testImplementation("org.springframework.security:spring-security-test")
-	implementation("io.mockk:mockk:1.12.1")
 	testImplementation("junit:junit:4.12")
 
 	annotationProcessor("org.projectlombok:lombok:1.18.12")

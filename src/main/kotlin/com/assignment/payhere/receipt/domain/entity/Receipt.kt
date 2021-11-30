@@ -1,12 +1,11 @@
 package com.assignment.payhere.receipt.domain.entity
 
-import com.assignment.payhere._global.util.Constant
 import javax.persistence.*
 import com.assignment.payhere.tag.domain.entity.Tag
 import com.assignment.payhere.user.domain.entity.User
 import java.io.Serializable
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 @Entity
 class Receipt(
@@ -29,7 +28,7 @@ class Receipt(
     var description: String = "",
 
     @Column(nullable = false)
-    val created: OffsetDateTime = OffsetDateTime.now(ZoneOffset.of(Constant.TIME_ZONE)),
+    val created: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault()),
 
     @Column(nullable = false)
     var deleted: Char = 'N'

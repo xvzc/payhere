@@ -15,6 +15,9 @@ enum class ErrorCode(
     INVALID_TYPE_VALUE( "G-003", " Invalid type value" ),
     ACCESS_DENIED("G-004", "Access is Denied"),
     LOGIN_REQUIRED("G-005", "Login required"),
+    INVALID_LOGIN_TOKEN("G-006", "Invalid login token"),
+    TOKEN_EXPIRED("G-007", "Token is expired"),
+    INVALID_DATE("GLOBAL-008", "Invalid Date Format"),
 
     // User
     USER_NOT_FOUND("USER-000", "User not found"),
