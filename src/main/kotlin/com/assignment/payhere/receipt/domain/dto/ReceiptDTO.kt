@@ -2,10 +2,22 @@ package com.assignment.payhere.receipt.domain.dto
 
 import com.assignment.payhere.receipt.domain.entity.Receipt
 import com.assignment.payhere.tag.domain.dto.TagResponseDTO
+import io.swagger.annotations.ApiModelProperty
 import org.hibernate.validator.constraints.Range
 import javax.validation.constraints.NotNull
+import javax.validation.constraints.Pattern
 import kotlin.Int.Companion.MAX_VALUE
 import kotlin.Int.Companion.MIN_VALUE
+
+data class ReceiptGetMonthlySumRequestDTO(
+    @Pattern(regexp = "^\\d{4}\\-(0?[1-9]|1[012])$", message = "날짜 형식(yyyy-MM)에 맞지 않습니다") // yyyy-MM만 받기 위한 정규표현식
+    val yearMonth: String
+)
+
+data class ReceiptGetDailySimpleRequestDTO(
+    @Pattern(regexp = "([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))", message = "날짜 형식(yyyy-MM)에 맞지 않습니다") // yyyy-MM만 받기 위한 정규표현식
+    val date: String
+)
 
 data class ReceiptAddRequestDTO(
     @Range(min = MIN_VALUE.toLong(), max = MAX_VALUE.toLong())
@@ -51,7 +63,7 @@ data class ReceiptSimpleResponseDTO(
         fun of(projection: ReceiptSimpleProjection): ReceiptSimpleResponseDTO {
             return ReceiptSimpleResponseDTO(
                 id = projection.id,
-                date = projection.date,
+                date = projection.dateTime,
                 amount = projection.amount,
                 tag = projection.tag
             )

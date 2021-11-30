@@ -11,4 +11,3 @@ RUN ["chmod", "+x", "./wait-for"]
 
 EXPOSE 8080
 
-CMD ["java", "-jar", , "-Dserver.port=8080","/app.jar"]

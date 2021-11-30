@@ -11,19 +11,24 @@ import com.querydsl.core.types.dsl.CaseBuilder
 import com.querydsl.core.types.dsl.Expressions
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Repository
-import java.time.OffsetDateTime
 
 @Repository
 class ReceiptQueryRepository(
     val queryFactory: JPAQueryFactory
 ) {
-    fun findMonthlyReceipts(userId: Long, firstDateOfMonth: OffsetDateTime): MutableList<ReceiptSumProjection> {
+    fun findMonthlyReceipts(userId: Long, yearMonth: String): MutableList<ReceiptSumProjection> {
         val receipt = QReceipt.receipt
 
-        val formattedDate = Expressions.stringTemplate(
+        val yearMonthDateFormat = Expressions.stringTemplate(
             "DATE_FORMAT({0}, {1})",
             receipt.created,
             ConstantImpl.create("%Y-%m-%d")
+        )
+
+        val yearMonthFormat = Expressions.stringTemplate(
+            "DATE_FORMAT({0}, {1})",
+            receipt.created,
+            ConstantImpl.create("%Y-%m")
         )
 
         val income = CaseBuilder()
@@ -37,25 +42,32 @@ class ReceiptQueryRepository(
         return queryFactory
             .select(
                 QReceiptSumProjection(
-                    formattedDate,
+                    yearMonthDateFormat,
                     income.longValue().sum(),
                     outgo.longValue().sum(),
                 )
             )
             .from(receipt)
-            .groupBy(formattedDate)
+            .groupBy(yearMonthDateFormat)
             .where(
                 receipt.user.id.eq(userId)
-                    .and(formattedDate.goe(firstDateOfMonth.toLocalDate().toString())) // 이번달 1일 부터
-                    .and(formattedDate.lt(firstDateOfMonth.plusMonths(1).toLocalDate().toString())) // 다음달 이전까지
+//                    .and(yearMonthDate.goe(firstDateOfMonth.toLocalDate().toString())) // 이번달 1일 부터
+//                    .and(yearMonthDate.lt(firstDateOfMonth.plusMonths(1).toLocalDate().toString())) // 다음달 이전까지
+                    .and(yearMonthFormat.eq(yearMonth))
                     .and(receipt.deleted.eq('N'))
             )
-            .orderBy(formattedDate.asc())
+            .orderBy(yearMonthDateFormat.asc())
             .fetch()
     }
 
-    fun findDailyReceipts(userId: Long, date: OffsetDateTime): MutableList<ReceiptSimpleProjection> {
+    fun findDailyReceipts(userId: Long, date: String): MutableList<ReceiptSimpleProjection> {
         val receipt = QReceipt.receipt
+
+        val formattedDateTime = Expressions.stringTemplate(
+            "DATE_FORMAT({0}, {1})",
+            receipt.created,
+            ConstantImpl.create("%Y-%m-%d %H:%i:%S")
+        )
 
         val formattedDate = Expressions.stringTemplate(
             "DATE_FORMAT({0}, {1})",
@@ -67,7 +79,7 @@ class ReceiptQueryRepository(
             .select(
                 QReceiptSimpleProjection(
                     receipt.id,
-                    formattedDate,
+                    formattedDateTime,
                     receipt.amount,
                     receipt.tag.name
                 )
@@ -75,7 +87,7 @@ class ReceiptQueryRepository(
             .from(receipt)
             .where(
                 receipt.user.id.eq(userId)
-                    .and(formattedDate.eq(date.toLocalDate().toString())) // 요청된 날짜 부터
+                    .and(formattedDate.eq(date)) // 요청된 날짜 부터
                     .and(receipt.deleted.eq('N'))
             )
             .orderBy(receipt.created.asc())

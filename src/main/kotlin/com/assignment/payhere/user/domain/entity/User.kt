@@ -1,11 +1,9 @@
 package com.assignment.payhere.user.domain.entity
 
-import com.assignment.payhere._global.util.Constant
 import com.assignment.payhere.user.domain.embeded.Password
-import lombok.EqualsAndHashCode
 import java.io.Serializable
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import javax.persistence.*
 import javax.validation.Valid
 
@@ -23,7 +21,7 @@ class User (
     var password: Password = Password(),
 
     @Column(nullable = false)
-    val created: OffsetDateTime = OffsetDateTime.now(ZoneOffset.of(Constant.TIME_ZONE)),
+    val created: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault()),
 ): Serializable {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

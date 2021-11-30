@@ -23,7 +23,8 @@ import org.junit.Assert.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.assertThrows
 import org.mockito.ArgumentMatchers.*
-import java.time.OffsetDateTime
+import java.time.LocalDate
+import java.time.YearMonth
 import java.util.*
 
 @ExtendWith(MockKExtension::class)
@@ -53,20 +54,18 @@ class ReceiptServiceTest {
             receiptQueryRepository
                 .findMonthlyReceipts(
                     anyLong(),
-                    any() as OffsetDateTime
+                    any()
                 )
         } answers {
             receiptSumProjections
         }
 
-        val month = "2021-11"
         val res = receiptService.getMonthlySumReceipts(
             anyLong(),
-            month
+            anyString()
         )
 
         res.forEach { dto ->
-            assertTrue(dto.date.startsWith(month))
             assertEquals(dto.income, receiptSumProjection.income)
             assertEquals(dto.outgo, receiptSumProjection.outgo)
         }
@@ -77,7 +76,7 @@ class ReceiptServiceTest {
     fun getDailySimpleReceiptsLogicTest() {
         val receiptSimpleProjection = ReceiptSimpleProjection(
             id = anyLong(),
-            date = "2021-11-01",
+            dateTime = "2021-11-01",
             amount = anyInt(),
             tag = anyString()
         )
@@ -98,9 +97,8 @@ class ReceiptServiceTest {
             receiptSimpleProjections
         }
 
-        val date = "2021-11-01"
-        receiptService.getDailySimpleReceipts(anyLong(), date).forEach { each ->
-            assertEquals(receiptSimpleProjection.date, each.date)
+        receiptService.getDailySimpleReceipts(anyLong(), anyString()).forEach { each ->
+            assertEquals(receiptSimpleProjection.dateTime, each.date)
             assertEquals(receiptSimpleProjection.id, each.id)
             assertEquals(receiptSimpleProjection.amount, each.amount)
             assertEquals(receiptSimpleProjection.tag, each.tag)

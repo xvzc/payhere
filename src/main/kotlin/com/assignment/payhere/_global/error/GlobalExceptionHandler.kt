@@ -48,6 +48,15 @@ class GlobalExceptionHandler {
         )
     }
 
+    @ExceptionHandler(DataFormatViolatedExceiption::class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    fun handleDataFormatViolatedExceiption(exception: DataFormatViolatedExceiption): ErrorResponse {
+        logger.info("handleDataFormatViolatedExceiption", exception)
+        return ErrorResponse(
+            error = BasicError.of(exception)
+        )
+    }
+
     /** 위에서 처리되지 않은 모든 Exception */
     @ExceptionHandler(Exception::class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

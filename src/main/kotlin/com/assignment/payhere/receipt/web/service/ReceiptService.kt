@@ -1,19 +1,20 @@
 package com.assignment.payhere.receipt.web.service
 
 import com.assignment.payhere._global.error.AuthenticationFailedException
+import com.assignment.payhere._global.error.DataFormatViolatedExceiption
 import com.assignment.payhere._global.error.ErrorCode
 import com.assignment.payhere._global.error.ResourceNotFoundException
-import com.assignment.payhere._global.util.Constant
 import com.assignment.payhere.receipt.domain.dto.*
 import com.assignment.payhere.receipt.domain.entity.Receipt
 import com.assignment.payhere.receipt.web.repository.ReceiptQueryRepository
 import com.assignment.payhere.receipt.web.repository.ReceiptRepository
 import com.assignment.payhere.tag.web.repository.TagRepository
-import com.assignment.payhere.user.domain.entity.User
 import com.assignment.payhere.user.web.repository.UserRepository
 import org.springframework.stereotype.Service
-import java.time.OffsetDateTime
+import java.time.LocalDate
+import java.time.YearMonth
 import javax.transaction.Transactional
+
 
 @Service
 class ReceiptService(
@@ -22,20 +23,15 @@ class ReceiptService(
     val tagRepository: TagRepository,
     val userRepository: UserRepository
 ) {
-    fun getMonthlySumReceipts(userId: Long, month: String): List<ReceiptSumResponseDTO> {
-        // 해당 달의 첫번째 날짜를 OffsetDate로
-        val firstDateOfMonth = OffsetDateTime.parse(month + "-01" + "T00:00:00" + Constant.TIME_ZONE)
-
-        return receiptQueryRepository.findMonthlyReceipts(userId, firstDateOfMonth)
+    fun getMonthlySumReceipts(userId: Long, yearMonth: String): List<ReceiptSumResponseDTO> {
+        return receiptQueryRepository.findMonthlyReceipts(userId, yearMonth)
             .map { projection ->
                 ReceiptSumResponseDTO.of(projection)
         }
     }
 
     fun getDailySimpleReceipts(userId: Long, date: String): List<ReceiptSimpleResponseDTO> {
-        val offsetDateTime = OffsetDateTime.parse(date + "T00:00:00" + Constant.TIME_ZONE)
-
-        val res = receiptQueryRepository.findDailyReceipts(userId, offsetDateTime)
+        val res = receiptQueryRepository.findDailyReceipts(userId, date)
 
         return res.map { projection ->
                 ReceiptSimpleResponseDTO.of(projection)
