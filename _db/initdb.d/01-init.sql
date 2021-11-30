@@ -19,7 +19,9 @@ CREATE TABLE IF NOT EXISTS `tag` (
     `user_id` BIGINT NOT NULL,
     `name`    VARCHAR(191) NOT NULL,
     PRIMARY KEY (`id`),
-    FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+    FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+    UNIQUE (`name`),
+    INDEX index_name (`user_id`,`name`)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `receipt` (
@@ -31,7 +33,8 @@ CREATE TABLE IF NOT EXISTS `receipt` (
      `created`     DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
      `deleted`     varchar(1) NOT NULL DEFAULT 'N',
 
-    PRIMARY KEY (`id`),
-    FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
-    FOREIGN KEY (`tag_id`) REFERENCES `tag` (`id`)
+     PRIMARY KEY (`id`),
+     FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+     FOREIGN KEY (`tag_id`) REFERENCES `tag` (`id`),
+     INDEX index_name (`user_id`,`created`)
 ) ENGINE = InnoDB;
