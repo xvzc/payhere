@@ -1,6 +1,5 @@
 # 가계부 API
 
-
 ## 기술 스택
 - Kotlin
 - Spring boot
